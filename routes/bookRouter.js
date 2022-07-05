@@ -14,6 +14,16 @@ router.get('/all', async (req, res) => {
 	});
 });
 
+/** Get all books in the descending order of timesRead */
+
+router.get('/trending', async (req, res) => {
+	const books = await Book.find().sort({ timesRead: -1 });
+	res.status(200).json({
+		success: true,
+		books,
+	});
+});
+
 /** Add a new book */
 
 router.post('/new', async (req, res) => {
@@ -38,6 +48,17 @@ router.post('/new', async (req, res) => {
 			message: 'Error creating book',
 		});
 	}
+});
+
+/** Pick a random book from the database */
+
+router.get('/random', async (req, res) => {
+	const books = await Book.find();
+	const randomBook = books[Math.floor(Math.random() * books.length)];
+	res.status(200).json({
+		success: true,
+		randomBook,
+	});
 });
 
 /** Get a book by ObjectID */
